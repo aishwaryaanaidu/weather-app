@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { request } = require('express');
+const request = require('request');
 
 // Creating an instance named app invoking express
 const app = express();
@@ -10,6 +10,7 @@ const apiKey = '57091dd894e268a7db5ea3021c8acbd1';
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
+// EJS -> Embedded Javascript
 app.set('view engine', 'ejs');
 
 // If we visit the root URL, Express will respond with the content inside.
