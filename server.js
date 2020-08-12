@@ -1,10 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const { request } = require('express');
 
 // Creating an instance named app invoking express
 const app = express();
+const apiKey = '57091dd894e268a7db5ea3021c8acbd1';
 
 // allows access to all of the static files within the ‘public’ folder
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true}));
 
 app.set('view engine', 'ejs');
 
@@ -14,7 +18,26 @@ app.get('/', function(req, res) {
 
     // Render the view and then send equivalent HTML to the client
     res.render('index');
-})
+});
+
+// Post request
+app.post('/', function(req, res) {
+    let city = req.body.city;
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
+    request(url, function(err, response, body) {
+        if(err) {
+            res.render('index', { weather: null, error: 'Error, please try again'});
+        } else {
+            let weather = JSON.parse(body);
+            if(weather.main == undefined) {
+                res.render('index', { weather: null, error: 'Please enter a valid city'});
+            } else {
+                let weatherText = `It's ${ weather.main.temp } degrees in ${ weather.name }!!`;
+                res.render('index', { weather: weatherText, error: null });
+            }
+        }
+    })
+});
 
 // The server is listening on port 3000 for connections
 app.listen(3000, function() {
