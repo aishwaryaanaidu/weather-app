@@ -4,7 +4,7 @@ const request = require('request');
 
 // Creating an instance named app invoking express
 const app = express();
-const apiKey = '57091dd894e268a7db5ea3021c8acbd1';
+const apiKey = <api-key>;
 
 // allows access to all of the static files within the ‘public’ folder
 app.use(express.static('public'));
